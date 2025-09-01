@@ -23,23 +23,28 @@ const { initDatabase } = require('./database/init');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// 安全中间件
+// 安全中间件 - 为HTTP部署优化
 app.use(helmet({
     contentSecurityPolicy: {
         directives: {
             defaultSrc: ["'self'"],
-            styleSrc: ["'self'", "'unsafe-inline'", "https://cdn.jsdelivr.net"],
-            scriptSrc: ["'self'", "'unsafe-inline'", "https://cdn.jsdelivr.net"],
-            imgSrc: ["'self'", "data:", "https:"],
+            styleSrc: ["'self'", "'unsafe-inline'", "https://cdn.jsdelivr.net", "http://cdn.jsdelivr.net"],
+            scriptSrc: ["'self'", "'unsafe-inline'", "https://cdn.jsdelivr.net", "http://cdn.jsdelivr.net"],
+            imgSrc: ["'self'", "data:", "https:", "http:"],
+            connectSrc: ["'self'", "http:", "https:"],
+            fontSrc: ["'self'", "https:", "http:", "data:"],
         },
     },
+    crossOriginOpenerPolicy: false,
+    crossOriginResourcePolicy: false,
+    hsts: false, // 禁用HTTPS强制，因为我们使用HTTP
 }));
 
 // CORS配置
 app.use(cors({
     origin: process.env.NODE_ENV === 'production' 
-        ? ['https://yourdomain.com'] 
-        : ['http://localhost:8080', 'http://127.0.0.1:8080'],
+        ? ['http://158.247.205.19:3000', 'https://158.247.205.19:3000'] 
+        : ['http://localhost:8080', 'http://127.0.0.1:8080', 'http://localhost:3000'],
     credentials: true
 }));
 
