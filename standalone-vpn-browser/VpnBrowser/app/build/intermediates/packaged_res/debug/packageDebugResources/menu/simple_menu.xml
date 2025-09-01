@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/action_my_account"
+        android:title="👤 我的账户" />
+        
+    <item
+        android:id="@+id/action_set_homepage"
+        android:title="🏠 设为主页" />
+        
+    <item
+        android:id="@+id/action_refresh_config"
+        android:title="🔄 刷新配置" />
+        
+    <item
+        android:id="@+id/action_reset_data"
+        android:title="🗑️ 一键重置" />
+
+</menu>

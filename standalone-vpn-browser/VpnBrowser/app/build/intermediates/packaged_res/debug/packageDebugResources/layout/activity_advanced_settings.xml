@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:background="#F5F5F5">
+
+    <!-- 标题栏 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:background="#FFFFFF"
+        android:elevation="2dp"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:layout_marginBottom="16dp">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="高级设置"
+            android:textSize="20sp"
+            android:textColor="#333333"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
+    <!-- 设置内容 -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!-- 节点管理卡片 -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:background="#FFFFFF"
+                android:elevation="4dp"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="🌐 节点管理"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:textColor="#333333"
+                    android:layout_marginBottom="12dp" />
+
+                <Button
+                    android:id="@+id/btn_manual_add_node"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:text="➕ 手动添加节点"
+                    android:textColor="#FFFFFF"
+                    android:background="#007AFF"
+                    android:layout_marginBottom="8dp" />
+
+
+
+                <Button
+                    android:id="@+id/btn_clear_nodes"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:text="🗑️ 清空节点"
+                    android:textColor="#FFFFFF"
+                    android:background="#FF3B30" />
+
+            </LinearLayout>
+
+            <!-- 技术支持卡片 -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:background="#FFFFFF"
+                android:elevation="4dp"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="🛠️ 技术支持"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:textColor="#333333"
+                    android:layout_marginBottom="12dp" />
+
+                                    <!-- QQ号显示和复制 -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:layout_marginBottom="8dp">
+
+                        <TextView
+                            android:id="@+id/tv_qq_info"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="📱 QQ: 888888888"
+                            android:textSize="14sp"
+                            android:textColor="#666666"
+                            android:background="#F8F9FA"
+                            android:padding="12dp" />
+
+                        <Button
+                            android:id="@+id/btn_copy_qq"
+                            android:layout_width="80dp"
+                            android:layout_height="40dp"
+                            android:text="复制"
+                            android:textSize="12sp"
+                            android:textColor="#FFFFFF"
+                            android:background="#007AFF"
+                            android:layout_marginStart="8dp" />
+
+                    </LinearLayout>
+
+                    <!-- 微信号显示和复制 -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:layout_marginBottom="8dp">
+
+                        <TextView
+                            android:id="@+id/tv_wechat_info"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="💬 微信: vpn_support_2024"
+                            android:textSize="14sp"
+                            android:textColor="#666666"
+                            android:background="#F8F9FA"
+                            android:padding="12dp" />
+
+                        <Button
+                            android:id="@+id/btn_copy_wechat"
+                            android:layout_width="80dp"
+                            android:layout_height="40dp"
+                            android:text="复制"
+                            android:textSize="12sp"
+                            android:textColor="#FFFFFF"
+                            android:background="#007AFF"
+                            android:layout_marginStart="8dp" />
+
+                    </LinearLayout>
+
+                    <!-- 服务时间 -->
+                    <TextView
+                        android:id="@+id/tv_service_hours"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="⏰ 服务时间: 工作日 9:00-18:00 (北京时间)"
+                        android:textSize="14sp"
+                        android:textColor="#666666"
+                        android:background="#F8F9FA"
+                        android:padding="12dp"
+                        android:layout_marginBottom="8dp" />
+
+                    <Button
+                        android:id="@+id/btn_refresh_support"
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
+                        android:text="🔄 刷新支持信息"
+                        android:textColor="#333333"
+                        android:background="#E5E5E5" />
+
+            </LinearLayout>
+
+
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</LinearLayout>

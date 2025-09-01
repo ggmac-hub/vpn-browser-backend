@@ -1,0 +1,22 @@
+[
+    {
+        "merged": "/Users/fxgz/.gradle/daemon/8.13/com.vpnbrowser.app-mergeDebugResources-33:/layout/activity_account.xml",
+        "source": "/Users/fxgz/.gradle/daemon/8.13/com.vpnbrowser.app-main-36:/layout/activity_account.xml"
+    },
+    {
+        "merged": "/Users/fxgz/.gradle/daemon/8.13/com.vpnbrowser.app-mergeDebugResources-33:/layout/activity_chrome_style.xml",
+        "source": "/Users/fxgz/.gradle/daemon/8.13/com.vpnbrowser.app-main-36:/layout/activity_chrome_style.xml"
+    },
+    {
+        "merged": "/Users/fxgz/.gradle/daemon/8.13/com.vpnbrowser.app-mergeDebugResources-33:/layout/activity_advanced_settings.xml",
+        "source": "/Users/fxgz/.gradle/daemon/8.13/com.vpnbrowser.app-main-36:/layout/activity_advanced_settings.xml"
+    },
+    {
+        "merged": "com.vpnbrowser.app-mergeDebugResources-33:/layout/activity_advanced_settings.xml",
+        "source": "com.vpnbrowser.app-main-36:/layout/activity_advanced_settings.xml"
+    },
+    {
+        "merged": "/Users/fxgz/.gradle/daemon/8.13/com.vpnbrowser.app-mergeDebugResources-33:/layout/dialog_manual_node.xml",
+        "source": "/Users/fxgz/.gradle/daemon/8.13/com.vpnbrowser.app-main-36:/layout/dialog_manual_node.xml"
+    }
+]

@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="📡 添加节点"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:textColor="@color/chrome_text"
+        android:gravity="center"
+        android:layout_marginBottom="16dp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="粘贴完整的节点链接"
+        android:textSize="14sp"
+        android:textColor="@color/chrome_text"
+        android:layout_marginBottom="8dp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="支持格式: vmess://, vless://, trojan://, ss://"
+        android:textSize="12sp"
+        android:textColor="@color/chrome_dark_gray"
+        android:layout_marginBottom="12dp" />
+
+    <EditText
+        android:id="@+id/edit_node_url"
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+        android:hint="粘贴节点链接，例如:&#10;vmess://ewogICJ2IjogIjIiLAogICJwcyI6ICJwY3xISyIsCiAgImFkZCI6ICJoa2cudHJ4cHJvbWF4LnBybyIsCiAgInBvcnQiOiA0MzIxOSwKICAiaWQiOiAiOGYyNTdiODgtZmU3NS00N2Q2LWFjMmItMWNjZTA0NjZhOTVmIiwKICAiYWlkIjogMCwKICAibmV0IjogIndzIiwKICAidHlwZSI6ICJub25lIiwKICAiaG9zdCI6ICIiLAogICJwYXRoIjogIi84ZjI1N2I4OCIsCiAgInRscyI6ICJ0bHMiCn0="
+        android:inputType="textMultiLine"
+        android:background="@drawable/chrome_address_bar_bg"
+        android:padding="12dp"
+        android:gravity="top"
+        android:scrollbars="vertical"
+        android:layout_marginBottom="16dp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="节点名称 (可选)"
+        android:textSize="14sp"
+        android:textColor="@color/chrome_text"
+        android:layout_marginBottom="8dp" />
+
+    <EditText
+        android:id="@+id/edit_node_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="自定义节点名称，留空则自动生成"
+        android:inputType="text"
+        android:background="@drawable/chrome_address_bar_bg"
+        android:padding="12dp"
+        android:layout_marginBottom="16dp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btn_paste_from_clipboard"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="📋 从剪贴板粘贴"
+            android:textColor="@color/chrome_white"
+            android:background="@color/chrome_blue"
+            android:layout_marginEnd="8dp" />
+
+        <Button
+            android:id="@+id/btn_clear_input"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="🗑️ 清空"
+            android:textColor="@color/chrome_white"
+            android:background="@color/chrome_dark_gray"
+            android:layout_marginStart="8dp" />
+
+    </LinearLayout>
+
+</LinearLayout>

@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/chrome_white">
+
+    <!-- Chrome风格顶部栏 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:orientation="horizontal"
+        android:background="@color/chrome_white"
+        android:elevation="4dp"
+        android:gravity="center_vertical"
+        android:paddingStart="16dp"
+        android:paddingEnd="8dp">
+
+        <!-- 地址栏容器 -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_weight="1"
+            android:orientation="horizontal"
+            android:background="@drawable/chrome_address_bar_bg"
+            android:gravity="center_vertical"
+            android:paddingStart="12dp"
+            android:paddingEnd="8dp">
+
+            <!-- 安全指示器/代理状态 -->
+            <TextView
+                android:id="@+id/security_indicator"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="🔴"
+                android:textSize="16sp"
+                android:layout_marginEnd="8dp" />
+
+            <!-- 地址栏 -->
+            <EditText
+                android:id="@+id/url_edit_text"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@android:color/transparent"
+                android:hint="搜索或输入网址"
+                android:textSize="16sp"
+                android:textColor="@color/chrome_text"
+                android:textColorHint="@color/chrome_dark_gray"
+                android:singleLine="true"
+                android:imeOptions="actionGo"
+                android:inputType="textUri"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp" />
+
+            <!-- 刷新按钮 -->
+            <Button
+                android:id="@+id/btn_refresh"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:text="⟳"
+                android:textSize="16sp"
+                android:textColor="@color/chrome_dark_gray"
+                android:background="@drawable/chrome_nav_button"
+                android:layout_marginStart="4dp" />
+
+        </LinearLayout>
+
+        <!-- 菜单按钮 -->
+        <Button
+            android:id="@+id/btn_menu"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:text="⋮"
+            android:textSize="20sp"
+            android:textColor="@color/chrome_dark_gray"
+            android:background="@drawable/chrome_nav_button"
+            android:layout_marginStart="8dp" />
+
+    </LinearLayout>
+
+    <!-- 导航按钮栏 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:orientation="horizontal"
+        android:background="@color/chrome_light_gray"
+        android:gravity="center_vertical"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp">
+
+        <!-- 后退按钮 -->
+        <Button
+            android:id="@+id/btn_back"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:text="←"
+            android:textSize="18sp"
+            android:textColor="@color/chrome_dark_gray"
+            android:background="@drawable/chrome_nav_button"
+            android:layout_marginEnd="8dp" />
+
+        <!-- 前进按钮 -->
+        <Button
+            android:id="@+id/btn_forward"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:text="→"
+            android:textSize="18sp"
+            android:textColor="@color/chrome_dark_gray"
+            android:background="@drawable/chrome_nav_button"
+            android:layout_marginEnd="8dp" />
+
+        <!-- 主页按钮 -->
+        <Button
+            android:id="@+id/btn_home"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:text="🏠"
+            android:textSize="16sp"
+            android:textColor="@color/chrome_dark_gray"
+            android:background="@drawable/chrome_nav_button"
+            android:layout_marginEnd="16dp" />
+
+        <!-- 页面标题 -->
+        <TextView
+            android:id="@+id/page_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="VPN浏览器"
+            android:textSize="14sp"
+            android:textColor="@color/chrome_text"
+            android:singleLine="true"
+            android:ellipsize="end" />
+
+
+
+    </LinearLayout>
+
+    <!-- 进度条 -->
+    <ProgressBar
+        android:id="@+id/progress_bar"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:max="100"
+        android:progressTint="@color/chrome_blue"
+        android:progressBackgroundTint="@color/chrome_gray"
+        android:visibility="gone" />
+
+    <!-- WebView -->
+    <WebView
+        android:id="@+id/webview"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+</LinearLayout>
