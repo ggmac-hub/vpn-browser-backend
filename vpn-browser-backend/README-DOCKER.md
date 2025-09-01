@@ -12,7 +12,7 @@ git add .
 git commit -m "Initial commit: VPN Browser Backend Management System"
 
 # 在GitHub创建仓库后，替换YOUR_USERNAME为你的GitHub用户名
-git remote add origin https://github.com/YOUR_USERNAME/vpn-browser-backend.git
+git remote add origin https://github.com/ggmac-hub/vpn-browser-backend.git
 git branch -M main
 git push -u origin main
 ```
@@ -34,7 +34,7 @@ docker-compose up -d
 #### 一键部署脚本
 ```bash
 # 下载并运行部署脚本
-curl -fsSL https://raw.githubusercontent.com/YOUR_USERNAME/vpn-browser-backend/main/deploy.sh -o deploy.sh
+curl -fsSL https://raw.githubusercontent.com/ggmac-hub/vpn-browser-backend/main/deploy.sh -o deploy.sh
 chmod +x deploy.sh
 sudo ./deploy.sh
 ```
@@ -46,7 +46,7 @@ sudo apt-get update
 sudo apt-get install -y docker.io docker-compose git
 
 # 2. 克隆项目
-git clone https://github.com/YOUR_USERNAME/vpn-browser-backend.git
+git clone https://github.com/ggmac-hub/vpn-browser-backend.git
 cd vpn-browser-backend
 
 # 3. 启动服务
@@ -179,10 +179,10 @@ journalctl -u docker
 
 ## 📞 技术支持
 
-- 项目地址：https://github.com/YOUR_USERNAME/vpn-browser-backend
+- 项目地址：https://github.com/ggmac-hub/vpn-browser-backend
 - 问题反馈：GitHub Issues
 - 部署文档：README-DOCKER.md
 
 ---
 
-**注意**：请将 `YOUR_USERNAME` 替换为你的实际GitHub用户名！
+**注意**：GitHub用户名已更新为 `ggmac-hub`，可以直接使用！

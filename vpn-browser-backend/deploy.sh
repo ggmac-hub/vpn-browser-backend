@@ -66,7 +66,7 @@ fi
 
 # 项目目录
 PROJECT_DIR="/opt/vpn-browser-backend"
-REPO_URL="https://github.com/YOUR_USERNAME/vpn-browser-backend.git"
+REPO_URL="https://github.com/ggmac-hub/vpn-browser-backend.git"
 
 echo -e "${YELLOW}📂 设置项目目录...${NC}"
 
