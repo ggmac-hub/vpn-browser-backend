@@ -14,6 +14,9 @@
         <el-button @click="showImportDialog" :icon="Upload">
           批量导入
         </el-button>
+        <el-button type="warning" @click="showBatchTestDialog" :icon="Connection">
+          批量测试
+        </el-button>
         <el-button @click="refreshNodes" :icon="Refresh" :loading="loading">
           刷新
         </el-button>
@@ -74,6 +77,25 @@
               :inactive-value="0"
               @change="toggleNodeStatus(row)"
             />
+          </template>
+        </el-table-column>
+        
+        <el-table-column label="测试状态" width="120">
+          <template #default="{ row }">
+            <div class="test-status">
+              <el-tag :type="getTestStatusType(row.last_test_status)" size="small">
+                {{ getTestStatusText(row.last_test_status) }}
+              </el-tag>
+              <div v-if="row.last_test_latency" class="latency">
+                {{ formatLatency(row.last_test_latency) }}
+              </div>
+            </div>
+          </template>
+        </el-table-column>
+        
+        <el-table-column prop="last_test_time" label="最后测试" width="120">
+          <template #default="{ row }">
+            {{ formatTestTime(row.last_test_time) }}
           </template>
         </el-table-column>
         
@@ -252,6 +274,116 @@
         </el-button>
       </template>
     </el-dialog>
+    
+    <!-- 测试结果对话框 -->
+    <el-dialog
+      v-model="testResultDialogVisible"
+      title="节点测试结果"
+      width="600px"
+    >
+      <div class="test-result-content">
+        <el-descriptions :column="2" border>
+          <el-descriptions-item label="节点名称">
+            {{ testResultData.node_name }}
+          </el-descriptions-item>
+          <el-descriptions-item label="测试时间">
+            {{ formatTime(testResultData.test_time) }}
+          </el-descriptions-item>
+          <el-descriptions-item label="测试结果">
+            <el-tag :type="testResultData.success ? 'success' : 'danger'">
+              {{ testResultData.success ? '成功' : '失败' }}
+            </el-tag>
+          </el-descriptions-item>
+          <el-descriptions-item label="延迟">
+            {{ testResultData.latency ? `${testResultData.latency}ms` : '-' }}
+          </el-descriptions-item>
+          <el-descriptions-item label="协议" v-if="testResultData.details">
+            {{ testResultData.details.protocol }}
+          </el-descriptions-item>
+          <el-descriptions-item label="地址" v-if="testResultData.details">
+            {{ testResultData.details.address }}:{{ testResultData.details.port }}
+          </el-descriptions-item>
+        </el-descriptions>
+        
+        <div v-if="testResultData.error" class="error-info">
+          <h4>错误信息</h4>
+          <el-alert :title="testResultData.error" type="error" show-icon :closable="false" />
+        </div>
+        
+        <div v-if="testResultData.details" class="details-info">
+          <h4>详细信息</h4>
+          <pre>{{ JSON.stringify(testResultData.details, null, 2) }}</pre>
+        </div>
+      </div>
+    </el-dialog>
+    
+    <!-- 批量测试对话框 -->
+    <el-dialog
+      v-model="batchTestDialogVisible"
+      title="批量测试节点"
+      width="800px"
+    >
+      <div class="batch-test-content">
+        <div class="node-selection">
+          <h4>选择要测试的节点</h4>
+          <el-checkbox-group v-model="selectedNodes">
+            <div class="node-list">
+              <el-checkbox 
+                v-for="node in nodes" 
+                :key="node.id" 
+                :label="node.id"
+                class="node-checkbox"
+              >
+                <div class="node-info">
+                  <el-tag :type="getProtocolType(node.protocol)" size="small">
+                    {{ node.protocol.toUpperCase() }}
+                  </el-tag>
+                  <span class="node-name">{{ node.name }}</span>
+                  <span class="node-address">{{ node.address }}:{{ node.port }}</span>
+                </div>
+              </el-checkbox>
+            </div>
+          </el-checkbox-group>
+        </div>
+        
+        <div v-if="batchTestResults.length > 0" class="test-results">
+          <h4>测试结果</h4>
+          <el-table :data="batchTestResults" stripe>
+            <el-table-column prop="node_name" label="节点名称" />
+            <el-table-column label="测试结果" width="100">
+              <template #default="{ row }">
+                <el-tag :type="row.success ? 'success' : 'danger'" size="small">
+                  {{ row.success ? '成功' : '失败' }}
+                </el-tag>
+              </template>
+            </el-table-column>
+            <el-table-column prop="latency" label="延迟" width="80">
+              <template #default="{ row }">
+                {{ row.latency ? `${row.latency}ms` : '-' }}
+              </template>
+            </el-table-column>
+            <el-table-column prop="error" label="错误信息" min-width="200">
+              <template #default="{ row }">
+                <span v-if="row.error" class="error-text">{{ row.error }}</span>
+                <span v-else class="success-text">连接正常</span>
+              </template>
+            </el-table-column>
+          </el-table>
+        </div>
+      </div>
+      
+      <template #footer>
+        <el-button @click="batchTestDialogVisible = false">关闭</el-button>
+        <el-button 
+          type="primary" 
+          @click="batchTestNodes" 
+          :loading="batchTestLoading"
+          :disabled="selectedNodes.length === 0"
+        >
+          开始测试 ({{ selectedNodes.length }})
+        </el-button>
+      </template>
+    </el-dialog>
   </div>
 </template>
 
@@ -309,6 +441,14 @@ const nodeRules = {
 const importDialogVisible = ref(false)
 const importLoading = ref(false)
 const importText = ref('')
+
+// 测试结果相关
+const testResultDialogVisible = ref(false)
+const testResultData = ref({})
+const batchTestDialogVisible = ref(false)
+const selectedNodes = ref([])
+const batchTestLoading = ref(false)
+const batchTestResults = ref([])
 
 // 计算属性
 const filteredNodes = computed(() => {
@@ -477,12 +617,131 @@ const deleteNode = async (node) => {
 }
 
 const testNode = async (node) => {
-  ElMessage.info('节点测试功能开发中...')
+  try {
+    // 显示测试中状态
+    const loadingMessage = ElMessage({
+      message: `正在测试节点 "${node.name}"...`,
+      type: 'info',
+      duration: 0,
+      showClose: true
+    })
+    
+    // 调用测试API
+    const response = await api.post(`/nodes/${node.id}/test`)
+    
+    // 关闭加载消息
+    loadingMessage.close()
+    
+    // 显示测试结果
+    if (response.data.success) {
+      ElMessage({
+        message: `节点 "${node.name}" 测试成功！延迟: ${response.data.latency}ms`,
+        type: 'success',
+        duration: 5000
+      })
+      
+      // 显示详细测试结果对话框
+      showTestResultDialog(response.data)
+    } else {
+      ElMessage({
+        message: `节点 "${node.name}" 测试失败: ${response.data.error}`,
+        type: 'error',
+        duration: 8000
+      })
+      
+      // 显示详细错误信息对话框
+      showTestResultDialog(response.data)
+    }
+    
+    // 刷新节点列表以显示最新测试状态
+    loadNodes()
+    
+  } catch (error) {
+    console.error('节点测试失败:', error)
+    ElMessage({
+      message: `节点测试失败: ${error.response?.data?.error || error.message}`,
+      type: 'error',
+      duration: 8000
+    })
+  }
 }
 
 const showImportDialog = () => {
   importDialogVisible.value = true
   importText.value = ''
+}
+
+// 显示测试结果对话框
+const showTestResultDialog = (result) => {
+  testResultData.value = result
+  testResultDialogVisible.value = true
+}
+
+// 批量测试相关方法
+const showBatchTestDialog = () => {
+  selectedNodes.value = []
+  batchTestResults.value = []
+  batchTestDialogVisible.value = true
+}
+
+const batchTestNodes = async () => {
+  if (selectedNodes.value.length === 0) {
+    ElMessage.warning('请至少选择一个节点进行测试')
+    return
+  }
+  
+  try {
+    batchTestLoading.value = true
+    batchTestResults.value = []
+    
+    const response = await api.post('/nodes/batch-test', {
+      nodeIds: selectedNodes.value
+    })
+    
+    batchTestResults.value = response.data.results || []
+    
+    ElMessage.success(`批量测试完成！成功: ${response.data.success}, 失败: ${response.data.failed}`)
+    
+    // 刷新节点列表
+    loadNodes()
+    
+  } catch (error) {
+    console.error('批量测试失败:', error)
+    ElMessage.error(`批量测试失败: ${error.response?.data?.error || error.message}`)
+  } finally {
+    batchTestLoading.value = false
+  }
+}
+
+// 获取测试状态的显示样式
+const getTestStatusType = (status) => {
+  const typeMap = {
+    'success': 'success',
+    'failed': 'danger',
+    'untested': 'info'
+  }
+  return typeMap[status] || 'info'
+}
+
+const getTestStatusText = (status) => {
+  const textMap = {
+    'success': '测试成功',
+    'failed': '测试失败',
+    'untested': '未测试'
+  }
+  return textMap[status] || '未知'
+}
+
+// 格式化延迟显示
+const formatLatency = (latency) => {
+  if (!latency) return '-'
+  return `${latency}ms`
+}
+
+// 格式化测试时间
+const formatTestTime = (time) => {
+  if (!time) return '-'
+  return dayjs(time).format('MM-DD HH:mm')
 }
 
 const pasteFromClipboard = async () => {
@@ -571,6 +830,104 @@ onMounted(() => {
 
 .import-section li {
   margin: 4px 0;
+}
+
+/* 测试状态样式 */
+.test-status {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.test-status .latency {
+  font-size: 12px;
+  color: #666;
+}
+
+/* 测试结果对话框样式 */
+.test-result-content {
+  padding: 16px 0;
+}
+
+.error-info,
+.details-info {
+  margin-top: 20px;
+}
+
+.error-info h4,
+.details-info h4 {
+  margin: 0 0 12px 0;
+  font-size: 14px;
+  color: #303133;
+}
+
+.details-info pre {
+  background: #f5f7fa;
+  padding: 12px;
+  border-radius: 4px;
+  font-size: 12px;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+/* 批量测试对话框样式 */
+.batch-test-content {
+  padding: 16px 0;
+}
+
+.node-selection h4,
+.test-results h4 {
+  margin: 0 0 16px 0;
+  font-size: 14px;
+  color: #303133;
+}
+
+.node-list {
+  max-height: 300px;
+  overflow-y: auto;
+  border: 1px solid #dcdfe6;
+  border-radius: 4px;
+  padding: 12px;
+}
+
+.node-checkbox {
+  display: block;
+  margin: 8px 0;
+  width: 100%;
+}
+
+.node-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-left: 8px;
+}
+
+.node-info .node-name {
+  font-weight: 500;
+  min-width: 120px;
+}
+
+.node-info .node-address {
+  color: #666;
+  font-size: 12px;
+}
+
+.test-results {
+  margin-top: 24px;
+  border-top: 1px solid #ebeef5;
+  padding-top: 20px;
+}
+
+.error-text {
+  color: #f56c6c;
+  font-size: 12px;
+}
+
+.success-text {
+  color: #67c23a;
+  font-size: 12px;
 }
 
 /* 响应式设计 */

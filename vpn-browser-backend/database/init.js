@@ -69,12 +69,22 @@ async function initDatabase() {
                 is_active BOOLEAN DEFAULT 1,
                 priority INTEGER DEFAULT 0,
                 max_connections INTEGER DEFAULT 1000,
+                last_test_time DATETIME,
+                last_test_result TEXT,
+                last_test_latency INTEGER,
+                last_test_status TEXT DEFAULT 'untested',
                 created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
                 updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
                 created_by INTEGER,
                 FOREIGN KEY (created_by) REFERENCES admins (id)
             )
         `);
+        
+        // 添加测试相关字段（如果不存在）
+        db.run(`ALTER TABLE proxy_nodes ADD COLUMN last_test_time DATETIME`, () => {});
+        db.run(`ALTER TABLE proxy_nodes ADD COLUMN last_test_result TEXT`, () => {});
+        db.run(`ALTER TABLE proxy_nodes ADD COLUMN last_test_latency INTEGER`, () => {});
+        db.run(`ALTER TABLE proxy_nodes ADD COLUMN last_test_status TEXT DEFAULT 'untested'`, () => {});
         
         // 创建导航链接表
         db.run(`
